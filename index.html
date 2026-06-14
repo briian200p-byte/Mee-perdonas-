@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Me perdonas?</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(
+        135deg,
+        #ffd6e7 0%,
+        #ffb6d9 25%,
+        #ff9ac7 50%,
+        #ffb6d9 75%,
+        #ffd6e7 100%
+    );
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.contenedor{
+    position:relative;
+}
+
+h1{
+    color:#d63384;
+    font-size:3rem;
+    margin-bottom:40px;
+}
+
+button{
+    padding:15px 30px;
+    font-size:1.3rem;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.3s;
+    margin:10px;
+}
+
+#si{
+    background:#28a745;
+    color:white;
+}
+
+#no{
+    background:#dc3545;
+    color:white;
+    position:absolute;
+}
+
+.mensaje{
+    background:rgba(255,255,255,0.90);
+    padding:35px;
+    border-radius:20px;
+    max-width:800px;
+    margin:auto;
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+    animation:aparecer 2s ease;
+}
+
+@keyframes aparecer{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.corazon{
+    position:fixed;
+    bottom:-20px;
+    pointer-events:none;
+    animation:flotar linear forwards;
+    z-index:999;
+}
+
+@keyframes flotar{
+    0%{
+        transform:translateY(0);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(-110vh);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="musica">
+    <source src="Gerardo Ortiz - Perdoname (Letra) HD(MP3_160K).mp3" type="audio/mpeg">
+</audio>
+
+<div class="contenedor">
+    <h1>🥺 ¿Me perdonas? 🥺</h1>
+
+    <button id="si">Sí ❤️</button>
+    <button id="no">No 💔</button>
+</div>
+
+<script>
+
+const botonSi = document.getElementById("si");
+const botonNo = document.getElementById("no");
+const musica = document.getElementById("musica");
+
+let tamaño = 1;
+
+botonNo.style.left = "180px";
+botonNo.style.top = "110px";
+
+function moverBoton(){
+
+    const ancho = window.innerWidth - 150;
+    const alto = window.innerHeight - 100;
+
+    const x = Math.random() * ancho;
+    const y = Math.random() * alto;
+
+    botonNo.style.left = x + "px";
+    botonNo.style.top = y + "px";
+
+    tamaño += 0.15;
+    botonSi.style.transform = `scale(${tamaño})`;
+}
+
+botonNo.addEventListener("mouseover", moverBoton);
+botonNo.addEventListener("click", moverBoton);
+
+botonSi.addEventListener("click", () => {
+
+    musica.play();
+
+    document.body.innerHTML = `
+        <audio autoplay>
+            <source src="perdoname.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="mensaje">
+            <h1>❤️ Gracias por perdonarme ❤️</h1>
+
+            <p style="font-size:24px; line-height:1.8;">
+                Perdón por haberte callado la primera vez que hablamos, perdón por hablar con otras muchachas que no se comparan contigo, espero de todo corazón que puedas perdonar mis errores, no puedo cambiar lo que hice pero he aprendido de ello y te prometo que no lo volveré a hacer, espero puedas perdonarme y darme otra oportunidad.
+            </p>
+
+            <p style="font-size:28px; margin-top:25px;">
+                🥺 (no me bloquees por favor)
+            </p>
+
+            <p style="font-size:22px; margin-top:35px;">
+                Gracias.
+            </p>
+
+            <p style="font-size:22px; margin-top:20px;">
+                Atentamente,<br>
+                Yo ❤️
+            </p>
+        </div>
+    `;
+
+    for(let i = 0; i < 40; i++){
+        crearCorazon();
+    }
+
+    setInterval(crearCorazon, 500);
+
+});
+
+function crearCorazon(){
+
+    const emojis = ["❤️","💖","💕","💗","💘"];
+
+    const corazon = document.createElement("div");
+    corazon.classList.add("corazon");
+
+    corazon.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+
+    corazon.style.left = Math.random() * 100 + "vw";
+    corazon.style.fontSize = (20 + Math.random() * 30) + "px";
+    corazon.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+    document.body.appendChild(corazon);
+
+    setTimeout(() => {
+        corazon.remove();
+    }, 8000);
+}
+</script>
+
+</body>
+</html>
